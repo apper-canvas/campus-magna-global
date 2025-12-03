@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import attendanceService from "@/services/api/attendanceService"
+import { attendanceService } from "@/services/api/attendanceService"
 
 const useAttendance = () => {
   const [attendance, setAttendance] = useState([])
