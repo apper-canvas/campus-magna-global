@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/layouts/Root";
 import { useSelector } from "react-redux";
-import { ApperIcon } from "@/components";
+import ApperIcon from "@/components/ApperIcon";
 import { Button } from "@/components/atoms";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
