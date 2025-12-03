@@ -1,179 +1,215 @@
-import attendanceData from "@/services/mockData/attendance.json"
-
-let attendance = [...attendanceData]
-
-const attendanceService = {
+import { getApperClient } from "@/services/apperClient";
+import { toast } from "react-toastify";
+export const attendanceService = {
   async getAll() {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return [...attendance]
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "student_c"}},
+          {"field": {"Name": "course_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "time_in_c"}},
+          {"field": {"Name": "time_out_c"}},
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "marked_by_c"}},
+          {"field": {"Name": "semester_c"}},
+          {"field": {"Name": "week_number_c"}},
+          {"field": {"Name": "class_duration_c"}},
+          {"field": {"Name": "excused_c"}}
+        ],
+        orderBy: [{"fieldName": "Id", "sorttype": "DESC"}]
+      };
+
+      const response = await apperClient.fetchRecords('attendance_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching attendance:", error?.response?.data?.message || error);
+      return [];
+    }
   },
 
   async getById(id) {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const record = attendance.find(a => a.Id === parseInt(id))
-    if (!record) {
-      throw new Error("Attendance record not found")
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "student_c"}},
+          {"field": {"Name": "course_c"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "time_in_c"}},
+          {"field": {"Name": "time_out_c"}},
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "marked_by_c"}},
+          {"field": {"Name": "semester_c"}},
+          {"field": {"Name": "week_number_c"}},
+          {"field": {"Name": "class_duration_c"}},
+          {"field": {"Name": "excused_c"}}
+        ]
+      };
+
+      const response = await apperClient.getRecordById('attendance_c', parseInt(id), params);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching attendance ${id}:`, error?.response?.data?.message || error);
+      return null;
     }
-    return { ...record }
   },
 
   async create(attendanceData) {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const newId = Math.max(...attendance.map(a => a.Id)) + 1
-    const newRecord = {
-      Id: newId,
-      ...attendanceData,
-      date: attendanceData.date || new Date().toISOString().split('T')[0]
-    }
-    attendance.push(newRecord)
-    return { ...newRecord }
-  },
-
-  async createBulk(attendanceRecords) {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    const newRecords = attendanceRecords.map(record => {
-      const newId = Math.max(...attendance.map(a => a.Id)) + 1
-      const newRecord = {
-        Id: newId,
-        ...record,
-        date: record.date || new Date().toISOString().split('T')[0]
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
       }
-      attendance.push(newRecord)
-      return { ...newRecord }
-    })
-    return newRecords
+
+      const params = {
+        records: [{
+          student_c: parseInt(attendanceData.student_c),
+          course_c: parseInt(attendanceData.course_c),
+          date_c: attendanceData.date_c,
+          status_c: attendanceData.status_c,
+          time_in_c: attendanceData.time_in_c,
+          time_out_c: attendanceData.time_out_c,
+          notes_c: attendanceData.notes_c,
+          marked_by_c: parseInt(attendanceData.marked_by_c),
+          semester_c: attendanceData.semester_c,
+          week_number_c: parseInt(attendanceData.week_number_c),
+          class_duration_c: parseInt(attendanceData.class_duration_c),
+          excused_c: attendanceData.excused_c === true
+        }]
+      };
+
+      const response = await apperClient.createRecord('attendance_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} attendance records:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+        return successful[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error creating attendance:", error?.response?.data?.message || error);
+      return null;
+    }
   },
 
   async update(id, attendanceData) {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const index = attendance.findIndex(a => a.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("Attendance record not found")
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          student_c: parseInt(attendanceData.student_c),
+          course_c: parseInt(attendanceData.course_c),
+          date_c: attendanceData.date_c,
+          status_c: attendanceData.status_c,
+          time_in_c: attendanceData.time_in_c,
+          time_out_c: attendanceData.time_out_c,
+          notes_c: attendanceData.notes_c,
+          marked_by_c: parseInt(attendanceData.marked_by_c),
+          semester_c: attendanceData.semester_c,
+          week_number_c: parseInt(attendanceData.week_number_c),
+          class_duration_c: parseInt(attendanceData.class_duration_c),
+          excused_c: attendanceData.excused_c === true
+        }]
+      };
+
+      const response = await apperClient.updateRecord('attendance_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} attendance records:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+        return successful[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error updating attendance:", error?.response?.data?.message || error);
+      return null;
     }
-    attendance[index] = { ...attendance[index], ...attendanceData }
-    return { ...attendance[index] }
   },
 
   async delete(id) {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    const index = attendance.findIndex(a => a.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("Attendance record not found")
-    }
-    const deletedRecord = attendance.splice(index, 1)[0]
-    return { ...deletedRecord }
-  },
-
-  async getByStudent(studentId) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return attendance.filter(a => a.studentId === parseInt(studentId)).map(a => ({ ...a }))
-  },
-
-  async getByCourse(courseId) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return attendance.filter(a => a.courseId === parseInt(courseId)).map(a => ({ ...a }))
-  },
-
-  async getByDate(date) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return attendance.filter(a => a.date === date).map(a => ({ ...a }))
-  },
-
-  async getBySemester(semester) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return attendance.filter(a => a.semester === semester).map(a => ({ ...a }))
-  },
-
-  async getAttendancePercentage(studentId, courseId = null) {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    
-    let studentRecords = attendance.filter(a => a.studentId === parseInt(studentId))
-    if (courseId) {
-      studentRecords = studentRecords.filter(a => a.courseId === parseInt(courseId))
-    }
-    
-    if (studentRecords.length === 0) return 100 // No records means no absence
-    
-    const presentCount = studentRecords.filter(a => a.status === "present").length
-    const totalCount = studentRecords.length
-    
-    return Math.round((presentCount / totalCount) * 100)
-  },
-
-  async getStudentAttendanceSummary(studentId) {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    const studentRecords = attendance.filter(a => a.studentId === parseInt(studentId))
-    
-    if (studentRecords.length === 0) {
-      return {
-        totalClasses: 0,
-        presentCount: 0,
-        absentCount: 0,
-        percentage: 100
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
       }
-    }
-    
-    const presentCount = studentRecords.filter(a => a.status === "present").length
-    const absentCount = studentRecords.filter(a => a.status === "absent").length
-    const totalCount = studentRecords.length
-    const percentage = Math.round((presentCount / totalCount) * 100)
-    
-    return {
-      totalClasses: totalCount,
-      presentCount,
-      absentCount,
-      percentage
-    }
-  },
 
-  async getLowAttendanceStudents(threshold = 75) {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const studentIds = [...new Set(attendance.map(a => a.studentId))]
-    const lowAttendanceStudents = []
-    
-    for (const studentId of studentIds) {
-      const percentage = await this.getAttendancePercentage(studentId)
-      if (percentage < threshold) {
-        const summary = await this.getStudentAttendanceSummary(studentId)
-        lowAttendanceStudents.push({
-          studentId,
-          ...summary
-        })
-      }
-    }
-    
-    return lowAttendanceStudents
-  },
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
 
-  async getCourseAttendanceStats(courseId) {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    const courseRecords = attendance.filter(a => a.courseId === parseInt(courseId))
-    
-    if (courseRecords.length === 0) {
-      return {
-        totalClasses: 0,
-        averageAttendance: 100,
-        studentCount: 0
+      const response = await apperClient.deleteRecord('attendance_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return false;
       }
-    }
-    
-    const dates = [...new Set(courseRecords.map(a => a.date))]
-    const students = [...new Set(courseRecords.map(a => a.studentId))]
-    
-    let totalPercentage = 0
-    for (const studentId of students) {
-      const percentage = await this.getAttendancePercentage(studentId, courseId)
-      totalPercentage += percentage
-    }
-    
-    const averageAttendance = students.length > 0 ? Math.round(totalPercentage / students.length) : 100
-    
-    return {
-      totalClasses: dates.length,
-      averageAttendance,
-      studentCount: students.length
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} attendance records:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        return successful.length > 0;
+      }
+    } catch (error) {
+      console.error("Error deleting attendance:", error?.response?.data?.message || error);
+      return false;
     }
   }
 }
-
-export default attendanceService

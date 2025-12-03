@@ -1,12 +1,16 @@
-import React, { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { motion } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
+import React, { useState } from "react";
+import { useAuth } from "@/layouts/Root";
+import { useSelector } from "react-redux";
+import { ApperIcon } from "@/components";
+import { Button } from "@/components/atoms";
+import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
-const Header = () => {
-  const location = useLocation()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+export default function Header() {
+  const { logout } = useAuth();
+  const { user, isAuthenticated } = useSelector(state => state.user);
+  const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
     { name: "Dashboard", path: "/", icon: "BarChart3" },
@@ -17,30 +21,61 @@ const Header = () => {
     { name: "Enrollment", path: "/enrollment", icon: "UserPlus" },
     { name: "Attendance", path: "/attendance", icon: "UserCheck" },
     { name: "Reports", path: "/reports", icon: "FileText" }
-  ]
+  ];
 
   const isActive = (path) => {
     if (path === "/") {
-      return location.pathname === "/"
+      return location.pathname === "/";
     }
-    return location.pathname.startsWith(path)
-  }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header className="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-<Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
               <ApperIcon name="GraduationCap" className="w-5 h-5 text-white" />
             </div>
+            <h1 className="text-xl font-bold text-slate-800">
+              Shree College Hub
+            </h1>
           </Link>
-
-{/* Header content - navigation moved to sidebar */}
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
+            {isAuthenticated && user && (
+              <>
+                <div className="hidden sm:flex items-center space-x-3">
+                  <div className="text-right">
+                    <div className="text-sm font-medium text-slate-800">
+                      {user.firstName} {user.lastName}
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      {user.emailAddress}
+                    </div>
+                  </div>
+                  <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {user.firstName?.charAt(0) || 'U'}
+                    </span>
+                  </div>
+                </div>
+                
+                <Button
+                  onClick={logout}
+                  variant="outline"
+                  size="sm"
+                  className="hidden sm:flex items-center space-x-2"
+                >
+                  <ApperIcon name="LogOut" size={16} />
+                  <span>Logout</span>
+                </Button>
+              </>
+            )}
+            
             <Button
               variant="ghost"
               size="sm"
@@ -54,7 +89,7 @@ const Header = () => {
               className="hidden sm:flex"
             />
             
-{/* Mobile sidebar toggle button */}
+            {/* Mobile sidebar toggle button */}
             <Button
               variant="ghost"
               size="sm"
@@ -66,7 +101,6 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
-{/* Mobile sidebar overlay */}
         {isMobileMenuOpen && (
           <>
             <div
@@ -109,7 +143,5 @@ const Header = () => {
         )}
       </div>
     </header>
-  )
+  );
 }
-
-export default Header

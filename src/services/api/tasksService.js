@@ -1,89 +1,219 @@
-import tasksData from "@/services/mockData/tasks.json"
-
-let tasks = [...tasksData]
-
-const tasksService = {
+import { getApperClient } from "@/services/apperClient";
+import { toast } from "react-toastify";
+export const tasksService = {
   async getAll() {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return [...tasks]
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "assigned_to_c"}},
+          {"field": {"Name": "assigned_by_c"}},
+          {"field": {"Name": "due_date_c"}},
+          {"field": {"Name": "priority_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "category_c"}},
+          {"field": {"Name": "tags_c"}},
+          {"field": {"Name": "estimated_hours_c"}},
+          {"field": {"Name": "actual_hours_c"}},
+          {"field": {"Name": "completion_date_c"}},
+          {"field": {"Name": "file_attachments_c"}}
+        ],
+        orderBy: [{"fieldName": "Id", "sorttype": "DESC"}]
+      };
+
+      const response = await apperClient.fetchRecords('task_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching tasks:", error?.response?.data?.message || error);
+      return [];
+    }
   },
 
   async getById(id) {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const task = tasks.find(t => t.Id === parseInt(id))
-    if (!task) {
-      throw new Error("Task not found")
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "assigned_to_c"}},
+          {"field": {"Name": "assigned_by_c"}},
+          {"field": {"Name": "due_date_c"}},
+          {"field": {"Name": "priority_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "category_c"}},
+          {"field": {"Name": "tags_c"}},
+          {"field": {"Name": "estimated_hours_c"}},
+          {"field": {"Name": "actual_hours_c"}},
+          {"field": {"Name": "completion_date_c"}},
+          {"field": {"Name": "file_attachments_c"}}
+        ]
+      };
+
+      const response = await apperClient.getRecordById('task_c', parseInt(id), params);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching task ${id}:`, error?.response?.data?.message || error);
+      return null;
     }
-    return { ...task }
   },
 
   async create(taskData) {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const newId = Math.max(...tasks.map(t => t.Id)) + 1
-    const newTask = {
-      Id: newId,
-      ...taskData,
-      createdAt: new Date().toISOString().split('T')[0]
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        records: [{
+          title_c: taskData.title_c,
+          description_c: taskData.description_c,
+          assigned_to_c: parseInt(taskData.assigned_to_c),
+          assigned_by_c: parseInt(taskData.assigned_by_c),
+          due_date_c: taskData.due_date_c,
+          priority_c: taskData.priority_c,
+          status_c: taskData.status_c,
+          category_c: taskData.category_c,
+          tags_c: taskData.tags_c,
+          estimated_hours_c: parseFloat(taskData.estimated_hours_c),
+          actual_hours_c: parseFloat(taskData.actual_hours_c) || 0,
+          completion_date_c: taskData.completion_date_c,
+          file_attachments_c: taskData.file_attachments_c || []
+        }]
+      };
+
+      const response = await apperClient.createRecord('task_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} tasks:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+        return successful[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error creating task:", error?.response?.data?.message || error);
+      return null;
     }
-    tasks.push(newTask)
-    return { ...newTask }
   },
 
   async update(id, taskData) {
-    await new Promise(resolve => setTimeout(resolve, 400))
-    const index = tasks.findIndex(t => t.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("Task not found")
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          title_c: taskData.title_c,
+          description_c: taskData.description_c,
+          assigned_to_c: parseInt(taskData.assigned_to_c),
+          assigned_by_c: parseInt(taskData.assigned_by_c),
+          due_date_c: taskData.due_date_c,
+          priority_c: taskData.priority_c,
+          status_c: taskData.status_c,
+          category_c: taskData.category_c,
+          tags_c: taskData.tags_c,
+          estimated_hours_c: parseFloat(taskData.estimated_hours_c),
+          actual_hours_c: parseFloat(taskData.actual_hours_c),
+          completion_date_c: taskData.completion_date_c,
+          file_attachments_c: taskData.file_attachments_c || []
+        }]
+      };
+
+      const response = await apperClient.updateRecord('task_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} tasks:`, failed);
+          failed.forEach(record => {
+            record.errors?.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            if (record.message) toast.error(record.message);
+          });
+        }
+        return successful[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error updating task:", error?.response?.data?.message || error);
+      return null;
     }
-    tasks[index] = { ...tasks[index], ...taskData }
-    return { ...tasks[index] }
   },
 
   async delete(id) {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    const index = tasks.findIndex(t => t.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("Task not found")
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
+
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+
+      const response = await apperClient.deleteRecord('task_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return false;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} tasks:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        return successful.length > 0;
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error?.response?.data?.message || error);
+      return false;
     }
-    const deletedTask = tasks.splice(index, 1)[0]
-    return { ...deletedTask }
-  },
-
-  async getByStatus(status) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return tasks.filter(t => t.status === status).map(t => ({ ...t }))
-  },
-
-  async getByPriority(priority) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return tasks.filter(t => t.priority === priority).map(t => ({ ...t }))
-  },
-
-  async getByAssignedTo(assignedTo) {
-    await new Promise(resolve => setTimeout(resolve, 250))
-    return tasks.filter(t => t.assignedTo === assignedTo).map(t => ({ ...t }))
-  },
-
-  async search(query) {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const lowerQuery = query.toLowerCase()
-    return tasks.filter(t => 
-      t.title.toLowerCase().includes(lowerQuery) ||
-      t.description.toLowerCase().includes(lowerQuery) ||
-      t.assignedTo.toLowerCase().includes(lowerQuery)
-    ).map(t => ({ ...t }))
-  },
-
-  async getUpcoming(days = 7) {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const today = new Date()
-    const futureDate = new Date(today.getTime() + (days * 24 * 60 * 60 * 1000))
-    
-    return tasks.filter(t => {
-      const dueDate = new Date(t.dueDate)
-      return dueDate >= today && dueDate <= futureDate && t.status !== 'Completed' && t.status !== 'Cancelled'
-    }).map(t => ({ ...t }))
   }
-}
-
-export default tasksService
+};

@@ -1,0 +1,204 @@
+{
+  "/": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Dashboard requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/students": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Students page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/faculty": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Faculty page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/courses": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Courses page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/departments": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Departments page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/enrollment": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Enrollment page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/attendance": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Attendance page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/tasks": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Tasks page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/deals": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Deals page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/reports": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Reports page requires authentication",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/login": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Login is public",
+            "rule": "public"
+          }
+        ]
+      }
+    }
+  },
+  "/signup": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Signup is public",
+            "rule": "public"
+          }
+        ]
+      }
+    }
+  },
+  "/callback": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Callback is public",
+            "rule": "public"
+          }
+        ]
+      }
+    }
+  },
+  "/error": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Error page is public",
+            "rule": "public"
+          }
+        ]
+      }
+    }
+  },
+  "/reset-password/**/*": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Reset password is public",
+            "rule": "public"
+          }
+        ]
+      }
+    }
+  },
+  "/prompt-password/**/*": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Prompt password is public",
+            "rule": "public"
+          }
+        ]
+      }
+    }
+  }
+}
