@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import departmentsService from "@/services/api/departmentsService"
+import { departmentsService } from "@/services/api/departmentsService"
 
 const useDepartments = () => {
   const [departments, setDepartments] = useState([])
