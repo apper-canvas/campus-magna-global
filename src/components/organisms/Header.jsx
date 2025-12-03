@@ -40,31 +40,10 @@ const Header = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 ${
-                  isActive(item.path)
-                    ? "text-primary-700 bg-primary-50"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
-              >
-                <ApperIcon name={item.icon} className="w-4 h-4" />
-                <span>{item.name}</span>
-                {isActive(item.path) && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-primary-100 rounded-lg -z-10"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </Link>
-            ))}
-          </nav>
+{/* Header content - navigation moved to sidebar */}
+          <div className="hidden md:block">
+            <h1 className="text-lg font-semibold text-slate-800">Campus Hub</h1>
+          </div>
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
@@ -81,7 +60,7 @@ const Header = () => {
               className="hidden sm:flex"
             />
             
-            {/* Mobile menu button */}
+{/* Mobile sidebar toggle button */}
             <Button
               variant="ghost"
               size="sm"
@@ -93,31 +72,49 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
+{/* Mobile sidebar overlay */}
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="md:hidden py-4 border-t border-slate-200"
-          >
-            <nav className="space-y-1">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-base font-medium transition-colors ${
-                    isActive(item.path)
-                      ? "text-primary-700 bg-primary-50"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                  }`}
-                >
-                  <ApperIcon name={item.icon} className="w-5 h-5" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </nav>
-          </motion.div>
+          <>
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <motion.div
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              className="fixed left-0 top-0 h-full w-64 bg-white shadow-xl z-50 md:hidden"
+            >
+              <div className="p-4 border-b border-slate-200">
+                <h2 className="text-lg font-semibold text-slate-800">Campus Hub</h2>
+              </div>
+              <nav className="p-4 space-y-1">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`relative flex items-center space-x-3 px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                      isActive(item.path)
+                        ? "text-primary-700 bg-primary-50"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                    }`}
+                  >
+                    <ApperIcon name={item.icon} className="w-5 h-5" />
+                    <span>{item.name}</span>
+                    {isActive(item.path) && (
+                      <motion.div
+                        layoutId="activeMobileTab"
+                        className="absolute inset-0 bg-primary-100 rounded-lg -z-10"
+                        initial={false}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                ))}
+              </nav>
+            </motion.div>
+          </>
         )}
       </div>
     </header>
