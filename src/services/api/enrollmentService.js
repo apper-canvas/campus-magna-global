@@ -1,8 +1,7 @@
 import { getApperClient } from "@/services/apperClient";
-import { toast } from "react-toastify";
-import React from "react";
+import { toast } from "react-hot-toast";
 
-export const enrollmentService = {
+const enrollmentService = {
   async getAll() {
     try {
       const apperClient = getApperClient();
@@ -214,4 +213,6 @@ export const enrollmentService = {
       return false;
     }
   }
-}
+};
+
+export default enrollmentService;
