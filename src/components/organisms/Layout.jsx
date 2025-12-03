@@ -16,6 +16,7 @@ const navigation = [
     { name: "Enrollment", path: "/enrollment", icon: "UserPlus" },
     { name: "Attendance", path: "/attendance", icon: "UserCheck" },
     { name: "Tasks", path: "/tasks", icon: "CheckSquare" },
+    { name: "Deals", path: "/deals", icon: "Handshake" },
     { name: "Reports", path: "/reports", icon: "FileText" }
   ]
 
