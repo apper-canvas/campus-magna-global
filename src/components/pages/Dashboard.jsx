@@ -7,11 +7,10 @@ import ApperIcon from "@/components/ApperIcon"
 import Button from "@/components/atoms/Button"
 import Loading from "@/components/ui/Loading"
 import ErrorView from "@/components/ui/ErrorView"
-import { studentsService } from "@/services/api/studentsService"
-import { coursesService } from "@/services/api/coursesService"
-import { facultyService } from "@/services/api/facultyService"
-import { enrollmentService } from "@/services/api/enrollmentService"
-
+import studentsService from "@/services/api/studentsService"
+import coursesService from "@/services/api/coursesService"
+import facultyService from "@/services/api/facultyService"
+import enrollmentService from "@/services/api/enrollmentService"
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
     totalStudents: 0,
