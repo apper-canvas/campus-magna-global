@@ -1,5 +1,5 @@
 import { getApperClient } from "@/services/apperClient";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const enrollmentService = {
   async getAll() {
