@@ -132,16 +132,16 @@ const Faculty = () => {
       key: "firstName",
       label: "Faculty Member",
       sortable: true,
-      render: (_, member) => (
+render: (_, member) => (
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center">
             <span className="text-sm font-medium text-purple-700">
-              {member.firstName[0]}{member.lastName[0]}
+              {member?.firstName?.[0] || 'F'}{member?.lastName?.[0] || 'L'}
             </span>
           </div>
           <div>
-            <p className="font-medium text-slate-900">{member.firstName} {member.lastName}</p>
-            <p className="text-sm text-slate-500">{member.email}</p>
+            <p className="font-medium text-slate-900">{member?.firstName || 'First'} {member?.lastName || 'Last'}</p>
+            <p className="text-sm text-slate-500">{member?.email || 'No email'}</p>
           </div>
         </div>
       )
