@@ -1,8 +1,6 @@
 import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
 
-import { getApperClient } from '@/services/apperClient';
-import { toast } from 'react-toastify';
 
 const studentsService = {
   async getAll() {
