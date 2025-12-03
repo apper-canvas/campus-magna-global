@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import tasksService from "@/services/api/tasksService"
+import { tasksService } from "@/services/api/tasksService"
 
 const useTasks = () => {
   const [tasks, setTasks] = useState([])
