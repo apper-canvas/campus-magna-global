@@ -145,11 +145,24 @@ const Deals = () => {
     return <Badge variant={variants[priority] || "default"}>{priority}</Badge>
   }
 
-  const formatCurrency = (value, currency) => {
+const formatCurrency = (value, currency) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency || 'USD'
     }).format(value)
+  }
+
+  const formatSafeDate = (dateValue) => {
+    if (!dateValue) return "N/A"
+    
+    const date = new Date(dateValue)
+    if (isNaN(date.getTime())) return "N/A"
+    
+    try {
+      return format(date, "MMM d, yyyy")
+    } catch (error) {
+      return "N/A"
+    }
   }
 
   const columns = [
@@ -186,17 +199,17 @@ const Deals = () => {
       sortable: true,
       render: (priority) => renderPriorityBadge(priority)
     },
-    {
+{
       key: "startDate",
       label: "Start Date",
       sortable: true,
-      render: (date) => date ? format(new Date(date), "MMM d, yyyy") : "N/A"
+      render: (date) => formatSafeDate(date)
     },
     {
       key: "expectedCloseDate",
       label: "Expected Close",
       sortable: true,
-      render: (date) => date ? format(new Date(date), "MMM d, yyyy") : "N/A"
+      render: (date) => formatSafeDate(date)
     },
     {
       key: "category",
