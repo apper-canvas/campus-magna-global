@@ -1,7 +1,10 @@
 import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
 
-export const studentsService = {
+import { getApperClient } from '@/services/apperClient';
+import { toast } from 'react-toastify';
+
+const studentsService = {
   async getAll() {
     try {
       const apperClient = getApperClient();
@@ -214,3 +217,5 @@ export const studentsService = {
     }
   }
 };
+
+export default studentsService;
