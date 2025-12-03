@@ -5,7 +5,7 @@ import useTasks from "@/hooks/useTasks"
 import DataTable from "@/components/organisms/DataTable"
 import Modal from "@/components/molecules/Modal"
 import Button from "@/components/atoms/Button"
-import Card, { CardHeader, CardContent } from "@/components/atoms/Card"
+import Card from "@/components/atoms/Card"
 import Badge from "@/components/atoms/Badge"
 import FormField from "@/components/molecules/FormField"
 import Input from "@/components/atoms/Input"
@@ -226,7 +226,7 @@ const Tasks = () => {
       </div>
 
       <Card>
-        <CardHeader>
+<Card.Header>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <Input
@@ -255,15 +255,15 @@ const Tasks = () => {
               </Select>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
+</Card.Header>
+<Card.Content>
           <DataTable
             data={filteredTasks}
             columns={columns}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
-        </CardContent>
+</Card.Content>
       </Card>
 
       <Modal
