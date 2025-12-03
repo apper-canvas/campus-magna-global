@@ -112,8 +112,8 @@ const DataTable = ({
                 className="table-row-hover"
               >
                 {columns.map((column) => (
-                  <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm">
-                    {column.render ? column.render(row[column.key], row) : row[column.key]}
+<td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm">
+                    {column.render ? column.render(row, row[column.key]) : row[column.key]}
                   </td>
                 ))}
                 {(onEdit || onDelete || onView) && (
