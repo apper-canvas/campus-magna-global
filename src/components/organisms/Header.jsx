@@ -31,19 +31,13 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+<Link to="/" className="flex items-center">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
               <ApperIcon name="GraduationCap" className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
-Shree College Hub
-            </span>
           </Link>
 
 {/* Header content - navigation moved to sidebar */}
-<div className="hidden md:block">
-            <h1 className="text-lg font-semibold text-slate-800">Shree College Hub</h1>
-          </div>
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
@@ -85,9 +79,6 @@ Shree College Hub
               exit={{ x: -300 }}
               className="fixed left-0 top-0 h-full w-64 bg-white shadow-xl z-50 md:hidden"
             >
-<div className="p-4 border-b border-slate-200">
-                <h2 className="text-lg font-semibold text-slate-800">Shree College Hub</h2>
-              </div>
               <nav className="p-4 space-y-1">
                 {navigation.map((item) => (
                   <Link
