@@ -22,6 +22,7 @@ const Departments = lazy(() => import("@/components/pages/Departments"))
 const Enrollment = lazy(() => import("@/components/pages/Enrollment"))
 const Attendance = lazy(() => import("@/components/pages/Attendance"))
 const Reports = lazy(() => import("@/components/pages/Reports"))
+const Tasks = lazy(() => import("@/components/pages/Tasks"))
 const NotFound = lazy(() => import("@/components/pages/NotFound"))
 
 // Main routes configuration
@@ -58,6 +59,10 @@ const mainRoutes = [
   {
     path: "reports",
     element: <Suspense fallback={<LoadingFallback />}><Reports /></Suspense>
+},
+  {
+    path: "tasks",
+    element: <Suspense fallback={<LoadingFallback />}><Tasks /></Suspense>
   },
   {
     path: "*",

@@ -7,7 +7,7 @@ import ApperIcon from "@/components/ApperIcon"
 const Layout = () => {
   const location = useLocation()
 
-  const navigation = [
+const navigation = [
     { name: "Dashboard", path: "/", icon: "BarChart3" },
     { name: "Students", path: "/students", icon: "GraduationCap" },
     { name: "Faculty", path: "/faculty", icon: "Users" },
@@ -15,6 +15,7 @@ const Layout = () => {
     { name: "Departments", path: "/departments", icon: "Building" },
     { name: "Enrollment", path: "/enrollment", icon: "UserPlus" },
     { name: "Attendance", path: "/attendance", icon: "UserCheck" },
+    { name: "Tasks", path: "/tasks", icon: "CheckSquare" },
     { name: "Reports", path: "/reports", icon: "FileText" }
   ]
 
