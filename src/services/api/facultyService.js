@@ -1,5 +1,6 @@
-import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
+import React from "react";
+import { getApperClient } from "@/services/apperClient";
 
 export const facultyService = {
   async getAll() {
@@ -208,9 +209,11 @@ export const facultyService = {
         }
         return successful.length > 0;
       }
-    } catch (error) {
+} catch (error) {
       console.error("Error deleting faculty:", error?.response?.data?.message || error);
       return false;
     }
   }
 };
+
+export default facultyService;
