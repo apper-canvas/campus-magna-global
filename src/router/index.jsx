@@ -1,16 +1,7 @@
-import { createBrowserRouter } from "react-router-dom"
-import { Suspense, lazy } from "react"
-import Layout from "@/components/organisms/Layout"
-
-const Dashboard = lazy(() => import("@/components/pages/Dashboard"))
-const Students = lazy(() => import("@/components/pages/Students"))
-const Courses = lazy(() => import("@/components/pages/Courses"))
-const Faculty = lazy(() => import("@/components/pages/Faculty"))
-const Enrollment = lazy(() => import("@/components/pages/Enrollment"))
-const Departments = lazy(() => import("@/components/pages/Departments"))
-const Reports = lazy(() => import("@/components/pages/Reports"))
-const NotFound = lazy(() => import("@/components/pages/NotFound"))
-
+import { createBrowserRouter } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
+import Layout from "@/components/organisms/Layout";
+// Loading fallback component
 const LoadingFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
     <div className="text-center space-y-4">
@@ -22,79 +13,64 @@ const LoadingFallback = () => (
   </div>
 )
 
+// Lazy load page components
+const Dashboard = lazy(() => import("@/components/pages/Dashboard"))
+const Students = lazy(() => import("@/components/pages/Students"))
+const Faculty = lazy(() => import("@/components/pages/Faculty"))
+const Courses = lazy(() => import("@/components/pages/Courses"))
+const Departments = lazy(() => import("@/components/pages/Departments"))
+const Enrollment = lazy(() => import("@/components/pages/Enrollment"))
+const Attendance = lazy(() => import("@/components/pages/Attendance"))
+const Reports = lazy(() => import("@/components/pages/Reports"))
+const NotFound = lazy(() => import("@/components/pages/NotFound"))
+
+// Main routes configuration
 const mainRoutes = [
   {
     path: "",
     index: true,
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Dashboard />
-      </Suspense>
-    )
+    element: <Suspense fallback={<LoadingFallback />}><Dashboard /></Suspense>
   },
   {
     path: "students",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Students />
-      </Suspense>
-    )
+    element: <Suspense fallback={<LoadingFallback />}><Students /></Suspense>
+  },
+  {
+    path: "faculty", 
+    element: <Suspense fallback={<LoadingFallback />}><Faculty /></Suspense>
   },
   {
     path: "courses",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Courses />
-      </Suspense>
-    )
-  },
-  {
-    path: "faculty",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Faculty />
-      </Suspense>
-    )
-  },
-  {
-    path: "enrollment",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Enrollment />
-      </Suspense>
-    )
+    element: <Suspense fallback={<LoadingFallback />}><Courses /></Suspense>
   },
   {
     path: "departments",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Departments />
-      </Suspense>
-    )
+    element: <Suspense fallback={<LoadingFallback />}><Departments /></Suspense>
+  },
+  {
+    path: "enrollment",
+    element: <Suspense fallback={<LoadingFallback />}><Enrollment /></Suspense>
+  },
+  {
+    path: "attendance",
+    element: <Suspense fallback={<LoadingFallback />}><Attendance /></Suspense>
   },
   {
     path: "reports",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Reports />
-      </Suspense>
-    )
+    element: <Suspense fallback={<LoadingFallback />}><Reports /></Suspense>
   },
   {
     path: "*",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <NotFound />
-      </Suspense>
-    )
+    element: <Suspense fallback={<LoadingFallback />}><NotFound /></Suspense>
   }
 ]
 
+// Create routes array with layout
 const routes = [
   {
     path: "/",
     element: <Layout />,
-    children: [...mainRoutes]
+    children: mainRoutes
   }
 ]
 
