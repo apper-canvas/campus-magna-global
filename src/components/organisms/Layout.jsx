@@ -30,8 +30,8 @@ const Layout = () => {
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
         <div className="flex flex-col flex-grow bg-white border-r border-slate-200 shadow-sm">
-          <div className="flex items-center flex-shrink-0 px-4 py-6 border-b border-slate-200">
-            <h1 className="text-xl font-bold text-slate-800">Campus Hub</h1>
+<div className="flex items-center flex-shrink-0 px-4 py-6 border-b border-slate-200">
+            <h1 className="text-xl font-bold text-slate-800">Shree College Hub</h1>
           </div>
           <div className="flex-grow flex flex-col">
             <nav className="flex-1 px-3 py-4 space-y-1">

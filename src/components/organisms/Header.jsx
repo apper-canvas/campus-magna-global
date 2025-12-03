@@ -36,13 +36,13 @@ const Header = () => {
               <ApperIcon name="GraduationCap" className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
-              CampusHub
+Shree College Hub
             </span>
           </Link>
 
 {/* Header content - navigation moved to sidebar */}
-          <div className="hidden md:block">
-            <h1 className="text-lg font-semibold text-slate-800">Campus Hub</h1>
+<div className="hidden md:block">
+            <h1 className="text-lg font-semibold text-slate-800">Shree College Hub</h1>
           </div>
 
           {/* User Menu */}
@@ -85,8 +85,8 @@ const Header = () => {
               exit={{ x: -300 }}
               className="fixed left-0 top-0 h-full w-64 bg-white shadow-xl z-50 md:hidden"
             >
-              <div className="p-4 border-b border-slate-200">
-                <h2 className="text-lg font-semibold text-slate-800">Campus Hub</h2>
+<div className="p-4 border-b border-slate-200">
+                <h2 className="text-lg font-semibold text-slate-800">Shree College Hub</h2>
               </div>
               <nav className="p-4 space-y-1">
                 {navigation.map((item) => (
