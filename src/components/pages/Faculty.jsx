@@ -38,12 +38,12 @@ const Faculty = () => {
     joiningDate: ""
   })
 
-  const filteredFaculty = faculty.filter(member => {
+const filteredFaculty = faculty.filter(member => {
     const matchesSearch = 
-      member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.specialization.toLowerCase().includes(searchTerm.toLowerCase())
+      (member.firstName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (member.lastName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (member.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (member.specialization || '').toLowerCase().includes(searchTerm.toLowerCase())
     
     const matchesDepartment = !departmentFilter || member.departmentId === departmentFilter
     
