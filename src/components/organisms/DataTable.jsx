@@ -4,15 +4,23 @@ import ApperIcon from "@/components/ApperIcon"
 import Button from "@/components/atoms/Button"
 import { cn } from "@/utils/cn"
 
-const DataTable = ({
-  data = [],
-  columns = [],
-  onEdit = null,
-  onDelete = null,
-  onView = null,
-  loading = false,
-  className = ""
-}) => {
+const DataTable = (props) => {
+  const {
+    data,
+    columns,
+    onEdit,
+    onDelete,
+    onView,
+    loading,
+    className
+  } = props
+
+  // Handle default values using logical OR
+  const tableData = data || []
+  const tableColumns = columns || []
+  const isLoading = loading || false
+  const cssClassName = className || ""
+
   const [sortColumn, setSortColumn] = useState(null)
   const [sortDirection, setSortDirection] = useState("asc")
 
@@ -25,7 +33,7 @@ const DataTable = ({
     }
   }
 
-  const sortedData = [...data].sort((a, b) => {
+  const sortedData = [...tableData].sort((a, b) => {
     if (!sortColumn) return 0
     
     const aValue = a[sortColumn]
