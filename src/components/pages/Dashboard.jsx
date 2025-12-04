@@ -213,10 +213,27 @@ const Dashboard = () => {
                         <div className="w-8 h-8 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center">
                           <ApperIcon name={activity.icon} className="w-4 h-4 text-primary-600" />
                         </div>
-                        <div className="flex-1 min-w-0">
+<div className="flex-1 min-w-0">
                           <p className="text-sm text-slate-900">{activity.message}</p>
                           <p className="text-xs text-slate-500">
-                            {format(new Date(activity.time), "MMM d, yyyy")}
+                            {(() => {
+                              try {
+                                if (!activity.time || activity.time === 'null' || activity.time === 'undefined') {
+                                  return 'No date available'
+                                }
+                                const date = new Date(activity.time)
+                                if (isNaN(date.getTime())) {
+                                  return 'Invalid date'
+                                }
+                                return date.toLocaleDateString('en-US', { 
+                                  year: 'numeric', 
+                                  month: 'short', 
+                                  day: 'numeric' 
+                                })
+                              } catch (error) {
+                                return 'Invalid date'
+                              }
+                            })()}
                           </p>
                         </div>
                       </motion.div>

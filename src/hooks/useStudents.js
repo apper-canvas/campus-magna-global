@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import studentsService from "@/services/api/studentsService"
-
+import { formatSafeDate } from "@/utils/formatSafeDate"
 const useStudents = () => {
   const [students, setStudents] = useState([])
   const [loading, setLoading] = useState(true)
